@@ -1,34 +1,69 @@
 <?php
+function int_validation($int_){
+    $minus = false;
+    for ($i=0;$i<strlen($int_);$i++) {
+        if ($int_[$i] == '-') {
+            if ($minus)
+                return false;
+            else
+                $minus = true;
+        } else
+            if (!($int_[$i] >= '0' && $int_[$i] <= '9'))
+                return false;
+    }
+    return true;
+} // Проверка строки на соответствие целому числу
+function double_validation($double_){
+    $minus = false;
+    $point = false;
+    for ($i=0;$i<strlen($double_);$i++) {
+        if ($double_[$i] == '-') {
+            if ($minus)
+                return false;
+            else
+                $minus = true;
+        } else if ($double_[$i] == '.'||$double_[$i] == ',') {
+            if ($point)
+                return false;
+            else
+                $point = true;
+        } else if (!($double_[$i] >= '0' && $double_[$i] <= '9'))
+            return false;
+    }
+    return true;
+} // Проверка строки на соответствие вещественному числу
 if (!isset($_SESSION)) {
     session_start();
 }
-if (!isset($_SESSION['historyResults'])) {
+if (!isset($_SESSION['historyResults'])) { // Инициализация массива с результатами
     $_SESSION['historyResults'] = array();
 }
-$message="";
-//$for_elected='<img id="poshel_nahuy" name="poshel_nahuy" src="https://pbs.twimg.com/profile_banners/1068586715219140608/1558728333/1500x500">';
+$message="НЕ ПЫТАЙСЯ МЕНЯ ОБМАНУТЬ";
 //$for_elected = '<script>document.location.href= "#message";</script>';
-$for_elected = 'ТЫ МЕНЯ НЕ НАЕБЁШЬ';
-if (isset($_GET['X'])&&isset($_GET['Y'])&&isset($_GET['R'])) {
+//$for_elected = 'ТЫ МЕНЯ НЕ НАЕБЁШЬ';
+if (
+    (isset($_GET['X']))&&(int_validation($_GET['X']))&&
+    (isset($_GET['R']))&&(int_validation($_GET['R']))&&
+    (isset($_GET['Y']))&&(double_validation($_GET['Y']))
+    )   // Проверка данных на соответствие формату
+{
     $X = (int)$_GET['X'];
     $Y = (double)(str_replace(",",".",$_GET['Y']));
     $R = (int)$_GET['R'];
     if ($X==-0) $X=(int)0;
     if ($R==-0) $R=(int)0;
     if ($Y==-0) $Y=(double)0.0;
-
     if (
         (gettype($X) == "integer" && $X >= -5 && $X <= 3) &&
         (gettype($R) == "integer" && $R >= 1 && $R <= 5) &&
         (gettype($Y) == "double" && $Y >= -5 && $Y <= 5)
-    )
+    )   // Проверка данных на соответствие допустимого диапазону
     {
 //запоминаем время начала работы скрипта
         $start = microtime(true);
 //получаем дату и время по москве
         date_default_timezone_set('Europe/Moscow');
         $now = date("d.m.y H:i");
-//получаем параметры из index.php
 
         if (
             (($Y >= -$R / 2 && $Y <= 0) && ($X >= -$R && $X <= 0)) ||
@@ -41,23 +76,22 @@ if (isset($_GET['X'])&&isset($_GET['Y'])&&isset($_GET['R'])) {
         $finish = microtime(true);
 //высчитываем время работы (разницу) и округляем
         $timeWork = $finish - $start;
-        $timeWork = round($timeWork, 7);
+        $timeWork = round($timeWork, 5);
 //заполняем переменную сессии для отображения всей таблицы
         $result = array($now, $timeWork, $X, $Y, $R, $message);
         array_push($_SESSION['historyResults'], $result);
     }
-    else {
-        $message = $for_elected;
-    }
+    else $message = $message."<br>(данные выходят из допустимого диапазона)";
 }
 else {
-    if (isset($_GET['X']) || isset($_GET['Y']) || isset($_GET['R'])) {
-        $message = $for_elected;
-    }
+    if (!(isset($_GET['X']) || isset($_GET['Y']) || isset($_GET['R']))) {
+        $message = "";
+    } else $message = $message."<br>(неверный формат данных)";
 }
 ?>
 <!--Выводим сообщение о результате-->
 <h3 id="message"> <?php echo $message; ?></h3>
+<!--Итоговая Таблица-->
 <div>
     <table class="table">
         <thead>

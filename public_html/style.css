@@ -89,21 +89,9 @@
 		background: linear-gradient(#f59500, #f5ae00) #f59500;
 	}
 
-	/*table {*/
-	/*	margin: 0 0 15px 20%;*/
-	/*	text-align: center;*/
-	/*	width: 700px;*/
-	/*	border: 2px solid #000;*/
-	/*	color: blue;*/
-	/*}*/
 	#message{
 		text-align: center;
 	}
-	/*td {*/
-	/*	text-align: center;*/
-	/*	padding: 3px;*/
-	/*	border-bottom: 1px solid #000;*/
-	/*}*/
 	table {
 		width: 100%;
 		border: none;

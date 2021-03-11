@@ -81,20 +81,8 @@
 </div>
 <div id="some-text"><?php include "script.php" ?></div>
 <script>
-    //здесь мы не даём пользователю ввести в поле для Y ввести не те данные
+
     function onlyDigits() {
-        this.value = this.value.replace(/[^\d\,\-]/g, "");
-        let Y = parseFloat(this.value);
-        if (Y) {
-            if (Y < -5 || Y > 5)
-                this.value = this.value.substr(0,0);
-        } else {
-            this.value = this.value.substr(0,0);
-        }
-
-    }
-
-    /*function onlyDigits() {
         this.value = this.value.replace(/[^\d\,\-]/g, "");//разрешаем ввод только цифр 0-9, запятой и минуса
 
         if (this.value.lastIndexOf("-") > 0) {//если пользователь вводит тире (минус) не самым первым символом...
@@ -129,7 +117,7 @@
             if (this.value.match(/-/g) && this.value.match(/-/g).length > 1) {//не даём ввести больше одного минуса
                 this.value = this.value.substr(0, this.value.lastIndexOf("-"));
             }
-    }*/
+    }
 
     //здесь мы выводим выбранное значени R
     $("#image_R").hide();
@@ -139,26 +127,31 @@
         $("#image_R").show();
     });
     $("#resetForm").click(function () {
+        $("#selectedR").html("");
         $("#image_R").hide();
         $("#errorFields").hide();
     });
 
     // function centre_on_pn() {
-    //     document.location.href="#message";
+    //     document.location.href=document.querySelector(".table tbody tr td:last-child");
     // }
     // document.getElementsByClassName("submit")[0].addEventListener("click", centre_on_pn);
-    document.querySelector(".coordinateY").addEventListener("keyup",onlyDigits);
-    document.querySelector("input.coordinateY").addEventListener("keyup", function(event) {
-        event.preventDefault();
-        if (event.keyCode === 13) {
-            CheckPoints();
-        }
-    });
+    document.querySelector(".coordinateY").addEventListener("keyup", onlyDigits);
+    // document.querySelector("input.coordinateY").addEventListener("keyup", function(event) {
+    //     event.preventDefault();
+    //     if (event.keyCode === 13) {
+    //         CheckPoints();
+    //     }
+    // });
 
 
     function CheckPoints() {
         function validate(R, X, Y) {
-            return (!isNaN(parseFloat(R)) && !isNaN(parseFloat(X)) && !isNaN(parseFloat(Y)))
+            return (
+                (!isNaN(parseFloat(R))&&parseFloat(R)>=1&&parseFloat(R)<=5) &&
+                (!isNaN(parseFloat(X))&&parseFloat(X)>=-5&&parseFloat(X)<=3) &&
+                (!isNaN(parseFloat(Y))&&parseFloat(Y)>=-5&&parseFloat(Y)<=5)
+            )
         }
 
         $("#errorFields").hide();
@@ -181,7 +174,6 @@
         } else {
             $("#errorFields").show();
         }
-
     }
 </script>
 
