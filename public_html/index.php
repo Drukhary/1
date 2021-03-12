@@ -149,9 +149,9 @@
         function validate(R, X, Y) {
             return (
                 (!isNaN(parseFloat(R))&&parseFloat(R)>=1&&parseFloat(R)<=5) &&
-                (!isNaN(parseFloat(X))&&parseFloat(X)>=-5&&parseFloat(X)<=3) &&
+                (!isNaN(parseInt(X))&&parseFloat(X)>=-5&&parseFloat(X)<=3) &&
                 (!isNaN(parseFloat(Y))&&parseFloat(Y)>=-5&&parseFloat(Y)<=5)
-            )
+            )   x
         }
 
         $("#errorFields").hide();
