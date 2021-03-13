@@ -151,7 +151,7 @@
                 (!isNaN(parseFloat(R))&&parseFloat(R)>=1&&parseFloat(R)<=5) &&
                 (!isNaN(parseInt(X))&&parseFloat(X)>=-5&&parseFloat(X)<=3) &&
                 (!isNaN(parseFloat(Y))&&parseFloat(Y)>=-5&&parseFloat(Y)<=5)
-            )   x
+            )
         }
 
         $("#errorFields").hide();
@@ -162,12 +162,7 @@
         if (validate(R, X, Y)) {
             body = "?" + "R=" + R + "&X=" + X + "&Y=" + Y;
             fetch("script.php" + body)
-                .then(function (request) {
-                    if (request.status === 501) {
-                        $("#poshel_nahuy").show();
-                    }
-                    return request.text();
-                })
+                .then(response => response.text())
                 .then(result => {
                     $("#some-text").html(result);
                 });
